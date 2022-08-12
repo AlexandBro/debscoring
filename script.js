@@ -172,12 +172,6 @@ class Team {
     teamGameScore = 0
     wins = 0
     name
-    baits = []
-    zeros = []
-    bellas = []
-    triplets = []
-    fours = []
-    sevens = []
     roundScores = []
     id
     games = []
@@ -214,15 +208,11 @@ class Round {
     teamTwoPoints
     teamOneForRenderValue
     teamTwoForRenderValue
-    teamConsoleInfo = {
-        teamOneC: 'message',
-        teamTwoC: 'message'
-    }
+
     constructor() {
         this.game = dataStorage.getGame(dataStorage.games.length-1)
         this.game.addRound(this)
         this.calcRoundPoints()
-        // this.calcTeamsPoints()
     }
     calcRoundPoints() {
         this.roundPoints = this.defRoundPoints + this.bellaPoints * +combinations.bella.value + this.triplPoints * +combinations.triple.value +
@@ -308,28 +298,6 @@ class Round {
     }
 }
 
-class Bait {
-
-}
-class Zero {
-
-}
-class Bella {
-
-}
-class Terz {
-
-}
-class FourCards {
-
-}
-class FiveCards {
-
-}
-class Deberz {
-
-}
-
 var dataStorage = new DataStorage()
 const leftTeam = new Team('Left', 0)
 const rightTeam = new Team('right', 1)
@@ -377,7 +345,7 @@ function playRound() {
     clearForm()
 }
 
-function playBaitRound(baitedTeamId, winTeam) {
+function playBaitRound(baitedTeamId) {
 
     const round = new Round()
     round.calcBaitPoints(baitedTeamId)
@@ -418,8 +386,6 @@ function playHalfBaitRound(halfBaitTeamId) {
     const round = new Round()
     round.calcHalfBaitPoints(halfBaitTeamId)
 
-    dataStorage
-
     dataStorage.getCurrentGame().teamOne.addRoundScore(round.teamOnePoints)
     dataStorage.getCurrentGame().teamTwo.addRoundScore(round.teamTwoPoints)
     dataStorage.getCurrentGame().teamOne.recordGameTeamScore(round.teamOnePoints)
@@ -443,10 +409,6 @@ function baitedTeamPoints(baitedTeamId) {
     }
 }
 
-// function zeroTeamPoints(zeroTeamId) {
-//     return {teamPoints: -100, teamValue: 'L -100'}
-// }
-
 function renderTeamWins() {
     dataStorage.teamWinsDisplay.teamOne.innerHTML = dataStorage.getTeam(0).wins
     dataStorage.teamWinsDisplay.teamTwo.innerHTML = dataStorage.getTeam(1).wins
@@ -457,9 +419,6 @@ function renderGeneralTeamScore() {
     dataStorage.generalTeamScoreDisplay.teamTwo.innerHTML = dataStorage.getTeam(1).teamGameScore
 }
 
-function renderTeamGameResult() {
-
-}
 
 function renderGameResult(valueOne, valueTwo) {
     dataStorage.gameScoreDisplay.teamOne.innerHTML = valueOne
@@ -516,12 +475,10 @@ function isGameOver() {
         console.log('Win oneTeam')
         dataStorage.getTeam(0).setWin()
         endGame()
-        // return true
     } else if (teamTwoGameScore > 1005 && teamTwoGameScore > teamOneGameScore) {
         console.log('Win twoTeam')
         dataStorage.getTeam(1).setWin()
         endGame()
-        // return true
     }
 }
 
