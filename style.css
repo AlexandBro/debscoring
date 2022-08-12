@@ -1,0 +1,243 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    width: 30px;
+    height: 30px;
+}
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: max-content;
+    border: solid 2px black;
+}
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 380px;
+    height: 7vh;
+    border-bottom: 1px solid black;
+}
+.general_score {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 100%;
+}
+.general_score_cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+}
+.round_info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: auto;
+    height: 84vh;
+    border-bottom: 1px solid black;
+}
+
+.game_score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 12%;
+}
+.team_score {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xxx-large;
+    width: 50%;
+    height: auto;
+}
+
+.rounds_info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 70%;
+}
+.round_results {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    height: 100%;
+}
+.points_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.points_input {
+
+}
+
+.btn_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+
+}
+
+.rounds_score_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.round_score {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 15px;
+    width: 50%;
+    height: 100%;
+}
+.round_cell_info {
+
+}
+.message_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+}
+.ng {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    width: 100%;
+    height: 100%;
+}
+
+#plg {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+#n-plg {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+.ask {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.ans {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.rounds {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 85%;
+}
+
+
+
+.round_card_combinations {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 18%;
+    border-top: 1px solid black;
+}
+.combinations {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+.option_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.combCell {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+.comb-select {
+
+}
+
+/*.btn.disabled {*/
+/*    opacity: 0.65;*/
+/*    cursor: not-allowed;*/
+/*}*/
+.btn {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 8vh;
+}
+
