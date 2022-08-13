@@ -6,7 +6,6 @@ Array.prototype.lastElement = function() {
 class DataStorage {
     teams = []
     games = []
-    name = 'DataStorage'
     gameStartsDisplay = {
         message: document.getElementById('msg-box')
     }
@@ -28,47 +27,38 @@ class DataStorage {
 
     constructor() {
     }
+
     addTeam(team) {
         this.teams.push(team)
     }
+
     getTeam(teamId) {
         return this.teams[teamId]
     }
-    getTeams() {
-        return this.teams
-    }
+
     addGame(game) {
         this.games.push(game)
     }
+
     getGame(gameId) {
         return this.games[gameId]
     }
-    getGames() {
-        return this.games
-    }
-    calcGeneralTeamScore() {
-        let generalPoints = 0
-        for(let i = 0; i< this.games.length; i++) {
-            generalPoints += this.getGames(i)
-        }
-        return generalPoints
-    }
+
     getCurrentGame() {
         return this.games.lastElement()
     }
-
 }
 
 let points = {
     teamOnePoints: document.getElementById('0tp'),
     teamTwoPoints: document.getElementById('1tp')
 }
-let combinations = {
-    bella: document.getElementById('value_bella'),
-    triple: document.getElementById('value_triple'),
-    four: document.getElementById('value_four'),
-    five: document.getElementById('value_five'),
-    seven: document.getElementById('value_seven'),
+let cardCombinations = {
+    doublet: document.getElementById('value_bella'),
+    triplet: document.getElementById('value_triple'),
+    quadruplet: document.getElementById('value_four'),
+    quintet: document.getElementById('value_five'),
+    septet: document.getElementById('value_seven'),
 }
 
 class Game {
@@ -83,74 +73,88 @@ class Game {
     teamTwoBaitCount = 0
     rounds = []
     roundCount = 0
+
     constructor(teamOne, teamTwo) {
         this.teamOne = teamOne
         this.teamTwo = teamTwo
         dataStorage.addGame(this)
         dataStorage.getTeam(0).addGame(this)
+        dataStorage.getTeam(1).addGame(this)
     }
+
     addRound(round) {
         this.rounds.push(round)
         this.roundCount++
     }
+
     calcTeamOneGameScore() {
         let score = 0
         for(let i = 0; i < this.rounds.length; i++) {
             score += this.rounds[i].teamOnePoints
         }
-        console.log('lst, t0: ' + score)
         this.teamOneScore = score
     }
+
     calcTeamTwoGameScore() {
         let score = 0
         for(let i = 0; i < this.rounds.length; i++) {
             score += this.rounds[i].teamTwoPoints
         }
-        console.log('lst, t1: ' + score)
         this.teamTwoScore = score
     }
+
     getTeamOnePoints() {
         return this.teamOneScore
     }
+
     getTeamTwoPoints() {
         return this.teamTwoScore
     }
+
     getRoundCount() {
         return this.roundCount
     }
+
     getLastRound() {
         return this.rounds.lastElement()
     }
+
     addBaitTeamOne() {
         this.teamOneBaits.push('bait')
         this.teamOneBaitCount ++
     }
+
     addBaitTeamTwo() {
         this.teamTwoBaits.push('bait')
         this.teamTwoBaitCount ++
     }
+
     getAmountBaitsOfTeamOne() {
         return this.teamOneBaits.length
     }
+
     getAmountBaitsOfTeamTwo() {
         return this.teamTwoBaits.length
     }
+
     getAmountBaitsOfTeam(teamId) {
-        if(teamId == 0) {
+        if(teamId === 0) {
             return this.getAmountBaitsOfTeamOne()
         } else {
             return this.getAmountBaitsOfTeamTwo()
         }
     }
+
     resetCounter(teamId) {
-        if(teamId == 0) {
+        if(teamId === 0) {
             this.teamOneBaitCount = 0
         } else {
             this.teamTwoBaitCount = 0
         }
     }
+
     getBaitCount(teamId) {
-        if(teamId == 0) {
+        if(teamId === 0) {
             return this.teamOneBaitCount
         } else {
             return this.teamTwoBaitCount
@@ -160,20 +164,22 @@ class Game {
     getHalfBaitPoints() {
         return this.halfBaitPoints
     }
+
     setHalfBaitPoints(points) {
-        this.halfBaitPoints = points
+        this.halfBaitPoints += points
     }
+
     resetHalfBaitPoints() {
         this.halfBaitPoints = 0
     }
 }
 
 class Team {
+    name
+    id
     teamGameScore = 0
     wins = 0
-    name
     roundScores = []
-    id
     games = []
 
     constructor(name, id) {
@@ -181,15 +187,19 @@ class Team {
         this.id = id
         dataStorage.addTeam(this)
     }
+
     recordGameTeamScore(points) {
         this.teamGameScore += points
     }
+
     addRoundScore(points) {
         this.roundScores.push(points)
     }
+
     addGame(game) {
         this.games.push(game)
     }
+
     setWin() {
         this.wins++
     }
@@ -199,11 +209,11 @@ class Round {
     game
     roundPoints
     defRoundPoints = 162
-    bellaPoints = 20
-    triplPoints = 20
-    fourPoints = 50
-    fivePoints = 70
-    sevensPoints = 1005
+    doubletPoints = 20
+    tripletPoints = 20
+    quadrupletPoints = 50
+    quintetPoints = 70
+    septetPoints = 1005
     teamOnePoints
     teamTwoPoints
     teamOneForRenderValue
@@ -214,14 +224,14 @@ class Round {
         this.game.addRound(this)
         this.calcRoundPoints()
     }
+
     calcRoundPoints() {
-        this.roundPoints = this.defRoundPoints + this.bellaPoints * +combinations.bella.value + this.triplPoints * +combinations.triple.value +
-            this.fourPoints * +combinations.four.value + this.fivePoints * +combinations.five.value +
-            this.sevensPoints * +combinations.seven.value
+        this.roundPoints = this.defRoundPoints + this.doubletPoints * +cardCombinations.doublet.value + this.tripletPoints * +cardCombinations.triplet.value +
+            this.quadrupletPoints * +cardCombinations.quadruplet.value + this.quintetPoints * +cardCombinations.quintet.value +
+            this.septetPoints * +cardCombinations.septet.value
     }
 
     defineRoundWinner() {
-        console.log('Round after balls')
         if(this.teamOnePoints > this.teamTwoPoints) {
             this.teamOnePoints += dataStorage.getCurrentGame().getHalfBaitPoints()
             this.teamOneForRenderValue += dataStorage.getCurrentGame().getHalfBaitPoints()
@@ -246,18 +256,16 @@ class Round {
             this.teamOneForRenderValue = this.roundPoints - this.teamTwoPoints
         }
         this.defineRoundWinner()
-
     }
-    calcBaitPoints(baitedTeam) {
 
-        if(baitedTeam == 0) {
+    calcBaitPoints(baitedTeam) {
+        if(baitedTeam === 0) {
             dataStorage.getCurrentGame().addBaitTeamOne()
             let baitResult = baitedTeamPoints(baitedTeam)
             this.teamTwoPoints = this.roundPoints + dataStorage.getCurrentGame().getHalfBaitPoints()
             this.teamTwoForRenderValue = this.roundPoints + dataStorage.getCurrentGame().getHalfBaitPoints()
             this.teamOnePoints = baitResult.teamPoints
             this.teamOneForRenderValue = baitResult.teamValue
-
         } else {
             dataStorage.getCurrentGame().addBaitTeamTwo()
             let baitResult = baitedTeamPoints(baitedTeam)
@@ -268,8 +276,9 @@ class Round {
         }
         dataStorage.getCurrentGame().resetHalfBaitPoints()
     }
+
     calcZeroPoints(zeroedTeamId) {
-        if(zeroedTeamId == 0) {
+        if(zeroedTeamId === 0) {
             this.teamTwoPoints = this.roundPoints + dataStorage.getCurrentGame().getHalfBaitPoints()
             this.teamTwoForRenderValue = this.roundPoints + dataStorage.getCurrentGame().getHalfBaitPoints()
             this.teamOnePoints = -100
@@ -282,8 +291,9 @@ class Round {
         }
         dataStorage.getCurrentGame().resetHalfBaitPoints()
     }
+
     calcHalfBaitPoints(halfBaitTeamId) {
-        if(halfBaitTeamId == 0) {
+        if(halfBaitTeamId === 0) {
             this.teamTwoPoints = this.roundPoints/2
             this.teamTwoForRenderValue = this.roundPoints/2
             this.teamOnePoints = 0
@@ -298,31 +308,29 @@ class Round {
     }
 }
 
-var dataStorage = new DataStorage()
+const dataStorage = new DataStorage()
 const leftTeam = new Team('Left', 0)
 const rightTeam = new Team('right', 1)
 endGame()
-
 
 
 function playGame() {
     clearGameResult()
     clearRoundResults()
     const game = new Game(leftTeam, rightTeam)
-    let btns = document.getElementsByTagName('button')
-    for (let btn of btns) {
-        btn.disabled = false
+    let buttons = document.getElementsByTagName('button')
+    for (let button of buttons) {
+        button.disabled = false
     }
     dataStorage.gameStartsDisplay.message.style.display = 'none'
     renderTeamWins()
     dataStorage.roundInfoDisplay.roundInfo.innerHTML = 'Round ' + 1
-
 }
 
 function endGame() {
-    let btns = document.getElementsByTagName('button')
-    for (let btn of btns) {
-        btn.disabled = true
+    let buttons = document.getElementsByTagName('button')
+    for (let button of buttons) {
+        button.disabled = true
     }
     dataStorage.gameStartsDisplay.message.style.display = 'flex'
 }
@@ -331,12 +339,7 @@ function playRound() {
     if(!isValidRound()) return
     const round = new Round()
     round.calcTeamsPoints()
-    dataStorage.getCurrentGame().teamOne.addRoundScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.addRoundScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().teamOne.recordGameTeamScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.recordGameTeamScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().calcTeamOneGameScore()
-    dataStorage.getCurrentGame().calcTeamTwoGameScore()
+    distributeTeamPoints(round)
     renderGameResult(dataStorage.getCurrentGame().getTeamOnePoints(), dataStorage.getCurrentGame().getTeamTwoPoints())
     renderRoundResult()
     renderGeneralTeamScore()
@@ -346,16 +349,9 @@ function playRound() {
 }
 
 function playBaitRound(baitedTeamId) {
-
     const round = new Round()
     round.calcBaitPoints(baitedTeamId)
-
-    dataStorage.getCurrentGame().teamOne.addRoundScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.addRoundScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().teamOne.recordGameTeamScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.recordGameTeamScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().calcTeamOneGameScore()
-    dataStorage.getCurrentGame().calcTeamTwoGameScore()
+    distributeTeamPoints(round)
     renderGameResult(dataStorage.getCurrentGame().getTeamOnePoints(), dataStorage.getCurrentGame().getTeamTwoPoints())
     renderRoundResult()
     renderGeneralTeamScore()
@@ -367,13 +363,7 @@ function playBaitRound(baitedTeamId) {
 function playZeroRound(zeroTeamId) {
     const round = new Round()
     round.calcZeroPoints(zeroTeamId)
-
-    dataStorage.getCurrentGame().teamOne.addRoundScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.addRoundScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().teamOne.recordGameTeamScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.recordGameTeamScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().calcTeamOneGameScore()
-    dataStorage.getCurrentGame().calcTeamTwoGameScore()
+    distributeTeamPoints(round)
     renderGameResult(dataStorage.getCurrentGame().getTeamOnePoints(), dataStorage.getCurrentGame().getTeamTwoPoints())
     renderRoundResult()
     renderGeneralTeamScore()
@@ -385,19 +375,22 @@ function playZeroRound(zeroTeamId) {
 function playHalfBaitRound(halfBaitTeamId) {
     const round = new Round()
     round.calcHalfBaitPoints(halfBaitTeamId)
-
-    dataStorage.getCurrentGame().teamOne.addRoundScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.addRoundScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().teamOne.recordGameTeamScore(round.teamOnePoints)
-    dataStorage.getCurrentGame().teamTwo.recordGameTeamScore(round.teamTwoPoints)
-    dataStorage.getCurrentGame().calcTeamOneGameScore()
-    dataStorage.getCurrentGame().calcTeamTwoGameScore()
+    distributeTeamPoints(round)
     renderGameResult(dataStorage.getCurrentGame().getTeamOnePoints(), dataStorage.getCurrentGame().getTeamTwoPoints())
     renderRoundResult()
     renderGeneralTeamScore()
     renderRoundInfo()
     isGameOver()
     clearForm()
+}
+
+function distributeTeamPoints(round) {
+    dataStorage.getCurrentGame().teamOne.addRoundScore(round.teamOnePoints)
+    dataStorage.getCurrentGame().teamTwo.addRoundScore(round.teamTwoPoints)
+    dataStorage.getCurrentGame().teamOne.recordGameTeamScore(round.teamOnePoints)
+    dataStorage.getCurrentGame().teamTwo.recordGameTeamScore(round.teamTwoPoints)
+    dataStorage.getCurrentGame().calcTeamOneGameScore()
+    dataStorage.getCurrentGame().calcTeamTwoGameScore()
 }
 
 function baitedTeamPoints(baitedTeamId) {
@@ -419,7 +412,6 @@ function renderGeneralTeamScore() {
     dataStorage.generalTeamScoreDisplay.teamTwo.innerHTML = dataStorage.getTeam(1).teamGameScore
 }
 
-
 function renderGameResult(valueOne, valueTwo) {
     dataStorage.gameScoreDisplay.teamOne.innerHTML = valueOne
     dataStorage.gameScoreDisplay.teamTwo.innerHTML = valueTwo
@@ -439,7 +431,6 @@ function renderRoundResult() {
 }
 
 function clearRoundResults() {
-    let target = document.getElementById('t0-rounds')
     document.querySelectorAll(".round_cell_info").forEach(el => el.remove());
 }
 
@@ -449,18 +440,18 @@ function clearGameResult() {
 }
 
 function clearForm() {
-    combinations.bella.selectedIndex = null
-    combinations.triple.selectedIndex = null
-    combinations.four.selectedIndex = null
-    combinations.five.selectedIndex = null
-    combinations.seven.selectedIndex = null
+    cardCombinations.doublet.selectedIndex = null
+    cardCombinations.triplet.selectedIndex = null
+    cardCombinations.quadruplet.selectedIndex = null
+    cardCombinations.quintet.selectedIndex = null
+    cardCombinations.septet.selectedIndex = null
 
     points.teamOnePoints.value = null
     points.teamTwoPoints.value = null
 }
 
 function isValidRound() {
-    if(+points.teamOnePoints.value + +points.teamTwoPoints.value == 0) {
+    if(+points.teamOnePoints.value + +points.teamTwoPoints.value === 0) {
         alert('Enter points')
         return false
     }
@@ -470,7 +461,6 @@ function isValidRound() {
 function isGameOver() {
     let teamOneGameScore = dataStorage.getCurrentGame().getTeamOnePoints()
     let teamTwoGameScore = dataStorage.getCurrentGame().getTeamTwoPoints()
-
     if(teamOneGameScore > 1005 && teamOneGameScore > teamTwoGameScore) {
         console.log('Win oneTeam')
         dataStorage.getTeam(0).setWin()
