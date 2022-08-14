@@ -25,8 +25,7 @@ class DataStorage {
         teamTwo: document.getElementById('game-score-1'),
     }
 
-    constructor() {
-    }
+    constructor() {}
 
     addTeam(team) {
         this.teams.push(team)
@@ -318,20 +317,16 @@ function playGame() {
     clearGameResult()
     clearRoundResults()
     const game = new Game(leftTeam, rightTeam)
-    let buttons = document.getElementsByTagName('button')
-    for (let button of buttons) {
-        button.disabled = false
-    }
+    switchElement('button', false)
+    switchElement('input', false)
     dataStorage.gameStartsDisplay.message.style.display = 'none'
     renderTeamWins()
     dataStorage.roundInfoDisplay.roundInfo.innerHTML = 'Round ' + 1
 }
 
 function endGame() {
-    let buttons = document.getElementsByTagName('button')
-    for (let button of buttons) {
-        button.disabled = true
-    }
+    switchElement('button', true)
+    switchElement('input', true)
     dataStorage.gameStartsDisplay.message.style.display = 'flex'
 }
 
@@ -451,11 +446,41 @@ function clearForm() {
 }
 
 function isValidRound() {
+
+    let inputCondition = verifyCorrectnessInputs()
+    let pointsCondition = verifyCorrectnessPoints()
+
+    if(inputCondition && pointsCondition) {
+        return true
+    }
+    return false
+}
+
+function verifyCorrectnessInputs() {
     if(+points.teamOnePoints.value + +points.teamTwoPoints.value === 0) {
-        alert('Enter points')
+        alert('Enter Points')
         return false
     }
     return true
+}
+
+function verifyCorrectnessPoints () {
+    let inputPoints = +points.teamOnePoints.value + +points.teamTwoPoints.value
+    let maxPossiblePoints = 162 + 20 * +cardCombinations.doublet.value + 20 * +cardCombinations.triplet.value +
+        50 * +cardCombinations.quadruplet.value + 70 * +cardCombinations.quintet.value +
+        1005 * +cardCombinations.septet.value
+    if(inputPoints > maxPossiblePoints) {
+        alert('Too much Points')
+        return false
+    }
+    return true
+}
+
+function switchElement(tag, status) {
+    let elements = document.getElementsByTagName(tag)
+    for(let element of elements) {
+        element.disabled = status
+    }
 }
 
 function isGameOver() {
